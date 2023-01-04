@@ -347,27 +347,29 @@ struct WalletListenerImpl: Wallet::WalletListener
 
 #pragma mark - Transaction
 
-- (BOOL)createTransactionToAddress:(NSString *)address amount:(NSString *)amount  priority:(PendingTransactionPriority)priority {
-    if (!beldex_wallet) return NO;
-    [self disposeTransaction];
-    std::optional<uint64_t> _amount;
-    if (![amount isEqualToString:@"sweep"]) {
-        _amount = Wallet::Wallet::amountFromString([amount UTF8String]);
-    }
-    beldex_pendingTransaction = beldex_wallet->createTransaction([address UTF8String],
-                                                                 _amount,
-                                                                 (Wallet::PendingTransaction::Priority) priority);
-    if (!beldex_pendingTransaction) return NO;
-    if (beldex_pendingTransaction->status().first != Status_Ok) {
-        NSLog(@"monero createTransaction fail reason: %@", [self transactionErrorMessage]);
-        return NO;
-    }
-    return YES;
-}
-
-//- (BOOL)createSweepTransactionToAddress:(NSString *)address paymentId:(NSString *)paymentId mixinCount:(uint32_t)mixinCount priority:(PendingTransactionPriority)priority {
-//    return [self createTransactionToAddress:address paymentId:paymentId amount:@"sweep" mixinCount:mixinCount priority:priority];
+//- (BOOL)createTransactionToAddress:(NSString *)address paymentId:(NSString *)paymentId amount:(NSString *)amount mixinCount:(uint32_t)mixinCount priority:(PendingTransactionPriority)priority {
+//    if (!beldex_wallet) return NO;
+//    [self disposeTransaction];
+//    Wallet::optional<uint64_t> _amount;
+//    if (![amount isEqualToString:@"sweep"]) {
+//        _amount = Wallet::Wallet::amountFromString([amount UTF8String]);
+//    }
+//    beldex_pendingTransaction = beldex_wallet->createTransaction([address UTF8String],
+//                                                                 [paymentId UTF8String],
+//                                                                 _amount,
+//                                                                 mixinCount,
+//                                                                 (Wallet::PendingTransaction::Priority)priority);
+//    if (!beldex_pendingTransaction) return NO;
+//    if (beldex_pendingTransaction->status() != Status_Ok) {
+//        NSLog(@"monero createTransaction fail reason: %@", [self transactionErrorMessage]);
+//        return NO;
+//    }
+//    return YES;
 //}
+
+- (BOOL)createSweepTransactionToAddress:(NSString *)address paymentId:(NSString *)paymentId mixinCount:(uint32_t)mixinCount priority:(PendingTransactionPriority)priority {
+    return [self createTransactionToAddress:address paymentId:paymentId amount:@"sweep" mixinCount:mixinCount priority:priority];
+}
 
 - (BOOL)commitPendingTransaction {
     if (beldex_pendingTransaction) {

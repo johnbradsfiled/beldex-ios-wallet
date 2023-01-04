@@ -1,8 +1,6 @@
 PODS:
   - ActiveLabel (1.1.0)
   - Alamofire (5.6.2)
-  - EFQRCode (6.2.1):
-    - swift_qrcodejs (~> 2.2.2)
   - Gifu (3.3.1)
   - IQKeyboardManagerSwift (6.5.10)
   - Schedule (2.1.0)
@@ -16,7 +14,6 @@ PODS:
 DEPENDENCIES:
   - ActiveLabel
   - Alamofire
-  - EFQRCode
   - Gifu
   - IQKeyboardManagerSwift
   - Schedule
@@ -29,7 +26,6 @@ SPEC REPOS:
   trunk:
     - ActiveLabel
     - Alamofire
-    - EFQRCode
     - Gifu
     - IQKeyboardManagerSwift
     - Schedule
@@ -41,7 +37,6 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   ActiveLabel: 5e3f4de79a1952d4604b845a0610d4776e4b82b3
   Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
-  EFQRCode: a4d39ec3466b68dffa71de3b5caef7c9ceefdc53
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
   IQKeyboardManagerSwift: 52962c76ab33532f15ad9f3ff4e5715eda5335bb
   Schedule: 00e6d7bbdbdb000fd1f51a7d10e9f88a8c451fda
@@ -50,6 +45,6 @@ SPEC CHECKSUMS:
   SwiftyRSA: 8c6dd1ea7db1b8dc4fb517a202f88bb1354bc2c6
   SwipeCellKit: 3972254a826da74609926daf59b08d6c72e619ea
 
-PODFILE CHECKSUM: 3540fbd29a3cf42e3107e0a1b79833ba906e5d01
+PODFILE CHECKSUM: 09194b19a044965740a353e406733044df3b0e25
 
 COCOAPODS: 1.11.3

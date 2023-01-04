@@ -8,7 +8,7 @@ target 'beldex-ios-wallet' do
 
   pod 'Schedule'
   pod 'ActiveLabel'
-  pod 'EFQRCode'
+ # pod 'EFQRCode'
   pod 'SnapKit'
   pod 'Alamofire'
   pod 'IQKeyboardManagerSwift'

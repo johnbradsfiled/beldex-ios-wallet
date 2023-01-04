@@ -80,7 +80,7 @@
 - (NSArray<BeldexSubAddress *> *)fetchSubAddressWithAccountIndex:(uint32_t)index;
 
 
-- (BOOL)createTransactionToAddress:(NSString *)address amount:(NSString *)amount priority:(PendingTransactionPriority)priority;
+- (BOOL)createTransactionToAddress:(NSString *)address paymentId:(NSString *)paymentId amount:(NSString *)amount mixinCount:(uint32_t)mixinCount priority:(PendingTransactionPriority)priority;
 - (BOOL)createSweepTransactionToAddress:(NSString *)address paymentId:(NSString *)paymentId mixinCount:(uint32_t)mixinCount priority:(PendingTransactionPriority)priority;
 - (BOOL)commitPendingTransaction;
 - (void)disposeTransaction;

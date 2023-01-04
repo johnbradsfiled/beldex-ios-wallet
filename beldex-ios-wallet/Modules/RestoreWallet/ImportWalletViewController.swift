@@ -30,7 +30,7 @@ class ImportWalletViewController: UIViewController,UITextViewDelegate {
         // Do any additional setup after loading the view.
         
         txtseed.delegate = self
-        txtseed.text = "ajar yacht heron galaxy wonders buzzer whipped unquoted dented paddles dagger alarms erase algebra southern width motherly inline zippers vaults donuts hoax either farming buzzer"
+        txtseed.text = "subtly gyrate dauntless bygones elapse radar justice tail arbitrary inroads website alley ozone aloof rest possible adjust melting oars wolf army envy vowels wobbly inroads"
       //  txtseed.text = "subtly gyrate dauntless bygones elapse radar justice tail arbitrary inroads website alley ozone aloof rest possible adjust melting oars wolf army envy vowels wobbly inroads"
         
         let seedvalue = txtseed.text!.lowercased()
@@ -61,8 +61,7 @@ class ImportWalletViewController: UIViewController,UITextViewDelegate {
     }
     
     private func alertWarningIfNeed(_ recover: RecoverWallet) {
-        guard recover.date == nil &&
-            recover.block == nil
+        guard recover.date == nil && recover.block == nil
         else {
             self.createWallet(recover)
             return

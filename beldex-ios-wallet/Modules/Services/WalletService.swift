@@ -64,10 +64,10 @@ class WalletService {
             case .seed:
                 if let seedStr = recover.seed, let seed = Seed.init(sentence: seedStr) {
                     result_wallet = BDXWalletBuilder(name: data.name, password: data.pwd).fromSeed(seed).generate()
-                    print("\(result_wallet.balance)")
-                    print("\(result_wallet.history)")
-                    print("\(result_wallet.blockChainHeight)")
-                    print("\(result_wallet.secretSpendKey)")
+//                    print("\(result_wallet.balance)")
+//                    print("\(result_wallet.history)")
+//                    print("\(result_wallet.blockChainHeight)")
+//                    print("\(result_wallet.secretSpendKey)")
                     if result_wallet != nil {
                         print("Height ==> \(result_wallet.blockChainHeight)")
                         let WalletSeed = result_wallet.seed!

@@ -121,8 +121,8 @@ public class BDXWallet {
         }
     }
     
-    public func createPendingTransaction(_ dstAddress: String,  amount: String) -> Bool {
-        return walletWrapper.createTransaction(toAddress: dstAddress,amount: amount,  priority: .default)
+    public func createPendingTransaction(_ dstAddress: String, paymentId: String, amount: String) -> Bool {
+        return walletWrapper.createTransaction(toAddress: dstAddress, paymentId: paymentId, amount: amount, mixinCount: 10, priority: .default)
     }
     
     public func createSweepTransaction(_ dstAddress: String, paymentId: String) -> Bool {

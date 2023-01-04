@@ -3,25 +3,25 @@
 
 
 import UIKit
-import EFQRCode
+//import EFQRCode
 
 class Helper: NSObject {
 
-    class func generateQRCode(content: String, icon: UIImage?, result: ((UIImage?) -> Void)?) {
-        DispatchQueuePool.shared["generateQRCode", .concurrent].async {
-            let generator = EFQRCodeGenerator.init(content: content, size: EFIntSize.init(width: 400, height: 400))
-            generator.setColors(backgroundColor: UIColor.white.cgColor, foregroundColor: UIColor.black.cgColor)
-            generator.setIcon(icon: icon?.cgImage, size: EFIntSize.init(width: 120, height: 120))
-            let cgImage = generator.generate()
-            DispatchQueue.main.async {
-                if let cgImage = cgImage {
-                    result?(UIImage.init(cgImage: cgImage))
-                } else {
-                    result?(nil)
-                }
-            }
-        }
-    }
+//    class func generateQRCode(content: String, icon: UIImage?, result: ((UIImage?) -> Void)?) {
+//        DispatchQueuePool.shared["generateQRCode", .concurrent].async {
+//            let generator = EFQRCodeGenerator.init(content: content, size: EFIntSize.init(width: 400, height: 400))
+//            generator.setColors(backgroundColor: UIColor.white.cgColor, foregroundColor: UIColor.black.cgColor)
+//            generator.setIcon(icon: icon?.cgImage, size: EFIntSize.init(width: 120, height: 120))
+//            let cgImage = generator.generate()
+//            DispatchQueue.main.async {
+//                if let cgImage = cgImage {
+//                    result?(UIImage.init(cgImage: cgImage))
+//                } else {
+//                    result?(nil)
+//                }
+//            }
+//        }
+//    }
     
     class func clipSuffix(_ text: String, clipChar: String) -> String {
         if text.hasSuffix(clipChar) {

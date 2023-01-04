@@ -34,7 +34,10 @@ class WelcomeVC: UIViewController {
     @IBAction func TabBarAction(sender:UIButton){
         
     }
-    
+    @IBAction func CuurencyarAction(sender:UIButton){
+        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CurrencyViewController") as! CurrencyViewController
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     
     
    

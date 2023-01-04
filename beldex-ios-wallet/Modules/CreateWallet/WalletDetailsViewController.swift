@@ -9,22 +9,22 @@ import UIKit
 
 class WalletDetailsViewController: UIViewController {
     
+    @IBOutlet weak var collectionView: UICollectionView! {
+        didSet {
+            collectionView.delegate = self
+            collectionView.dataSource = self
+            collectionView.register(TrXibCell.nib, forCellWithReuseIdentifier: TrXibCell.identifier)
+        }
+    }
+    
     @IBOutlet weak var lbladdress:UILabel!
     @IBOutlet weak var lblnode:UILabel!
     @IBOutlet weak var lblsync:UILabel!
     @IBOutlet weak var lblname:UILabel!
     @IBOutlet var progressView: UIProgressView!
     
-    
-    private var address: String = "9u98r2oSvnZ6FZSrfF4YqiejPXVsT4bBPiSm9UcpaEKvdDigDThHWKYYgLz6p36amZ6BPwBnn1gL7B5ZmL6gkKeQ548hnx4"
-    private var amount: String = "10"
-    private var paymentId: String = ""
-    
-    private var sendValid: Bool {
-        return address.count > 0 && amount.count > 0
-    }
-    
-//    private var isAllin: Bool = false
+    @IBOutlet weak var lblbalance:UILabel!
+    @IBOutlet weak var lblConversionbalance:UILabel!
     
     lazy var statusTextState = { return Observable<String>("") }()
     lazy var sendState = { return Observable<Bool>(false) }()
@@ -48,8 +48,9 @@ class WalletDetailsViewController: UIViewController {
     
 //    private let pwd: String
 //    private let asset: Assets
- //   private let token = TokenWallet()
+//    private let token = TokenWallet()
     private var wallet: BDXWallet?
+    var TransactionItemArray = [TransactionItem]()
 
     private var listening = false
     private var isSyncingUI = false {
@@ -89,46 +90,32 @@ class WalletDetailsViewController: UIViewController {
         
     }
     
-    @IBAction func BackAction(sender:UIButton){
-        self.navigationController?.popViewController(animated: true)
-    }
-    @IBAction func SendAction(sender:UIButton){
-        guard BeldexWalletWrapper.validAddress(address) else {
-//            HUD.showError(LocalizedString(key: "address.validate.fail", comment: ""))
-            return
-        }
-//        HUD.showHUD()
-        DispatchQueue.global().async {
-//            let success: Bool
-//            if self.isAllin {
-//                success = self.wallet.createSweepTransaction(self.address, paymentId: self.paymentId)
-//            } else {
-            var success = ((self.wallet?.createPendingTransaction(self.address, amount: self.amount)) != nil)
-            print("success ----> ", success)
-//            }
-//            DispatchQueue.main.async {
-////                HUD.hideHUD()
-            if success {
-                   let commit_success = self.wallet?.commitPendingTransaction()
-                if commit_success == true {
-                    self.wallet?.disposeTransaction()}
-                }
-//                if commit_success {
-                   
-                    
-//                    if errMsg.count == 0 {
-//                        errMsg = LocalizedString(key: "send.create.failure", comment: "")
-//                    }
-//                    HUD.showError(errMsg)
-                    return
-                }
-//                finish?()
-//            }
-//        }
-        
+    // Reconnect work
+    @IBAction func Reconnect_Action(sender:UIButton){
         
     }
     
+    // Rescan work
+    @IBAction func Rescan_Action(sender:UIButton){
+        
+    }
+    
+    // Send work
+    @IBAction func Send_Action(sender:UIButton){
+        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SendViewController") as! SendViewController
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    // Recive work
+    @IBAction func Recive_Action(sender:UIButton){
+        
+    }
+    
+    
+    
+    @IBAction func BackAction(sender:UIButton){
+        self.navigationController?.popViewController(animated: true)
+    }
    
     func init_wallet() {
         sendState.value = false
@@ -160,13 +147,13 @@ class WalletDetailsViewController: UIViewController {
             self.conncetingState.value = true
             lblsync.text = LocalizedString(key: "Connecting, it may take 5 minutes", comment: "Connecting, it may take 5 minutes")
         }
-        wallet.connectToDaemon(address: WalletDefaults.shared.node, delegate: self) { [weak self] (isConnected) in
+        wallet.connectToDaemon(address: "explorer.beldex.io:19091", delegate: self) { [weak self] (isConnected) in
             guard let `self` = self else { return }
             if isConnected {
                 if let wallet = self.wallet {
                     let WalletRestoreHeight = UserDefaults.standard.string(forKey: "WalletRestoreHeight")
                     if let restoreHeight = WalletRestoreHeight{
-                        wallet.restoreHeight = UInt64(restoreHeight)!
+                        wallet.restoreHeight = UInt64(restoreHeight) ?? 0
                     }
                     wallet.start()
                 }
@@ -249,6 +236,7 @@ extension WalletDetailsViewController: BeldexWalletDelegate {
             if self.conncetingState.value {
                 self.conncetingState.value = false
             }
+            self.collectionView.reloadData()
             self.synchronizedUI()
         }
     }
@@ -266,6 +254,12 @@ extension WalletDetailsViewController: BeldexWalletDelegate {
         print("---------->All Transation list----------> \(history.all)")
         print("---------->Send list----------> \(history.send)")
         print("---------->Recive list----------> \(history.receive)")
+        
+        TransactionItemArray = history.all
+        print("---------->TransactionItemArray----------> \(TransactionItemArray)")
+      //  print("---------->TransactionItemArray.amount----------> \(TransactionItemArray[0].amount)")
+        print("---------->TransactionItemArray----------> \(TransactionItemArray.count)")
+        
 //        /// 数据转换
 //        let itemMapToRow = { (item: TransactionItem) -> TableViewRow in
 //            let model = Transaction.init(item: item)
@@ -281,10 +275,36 @@ extension WalletDetailsViewController: BeldexWalletDelegate {
 //        let receiveData = [TableViewSection(history.receive.map(itemMapToRow))]
 //        let sendData = [TableViewSection(history.send.map(itemMapToRow))]
 //
-//        DispatchQueue.main.async {
-//            self.balanceState.value = balance_modify
-//            self.historyState.newState([allData, receiveData, sendData])
-//        }
+        DispatchQueue.main.async {
+            self.lblbalance.text = balance_modify
+          //  self.historyState.newState([allData, receiveData, sendData])
+        }
     }
     
 }
+extension WalletDetailsViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return TransactionItemArray.count
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrXibCell.identifier, for: indexPath) as! TrXibCell
+        //        cell.indexPath = indexPath
+        //        cell.delegate = self
+        cell.lblname.text = TransactionItemArray[indexPath.item].amount
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        //        if isExpanded[indexPath.row] == true{
+        //            return CGSize(width: collectionView.frame.size.width, height: 330)
+        //        }else{
+        return CGSize(width: collectionView.frame.size.width, height: 75)
+        //        }
+    }
+    
+}
+    
